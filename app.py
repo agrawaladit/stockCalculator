@@ -13,15 +13,18 @@ def index():
             profile = requests.get(
                 f'https://finnhub.io/api/v1/stock/profile2?symbol={symbol}&token=butkvvv48v6qj1ddtp10')
             stock = requests.get(f'https://finnhub.io/api/v1/quote?symbol={symbol}&token=butkvvv48v6qj1ddtp10')
-            change = stock.json()['c'] - stock.json()['pc']
-            current = stock.json()['c']
-            percent = (change/current) * 100
-
-            if change > 0: change = '+'+str(round(change, 2))
-            else: change = round(change, 2)
-            if change > 0: percent = '+'+str(round(percent,2))
-            else: percent = round(percent, 2)
             if profile.json() and stock.json():
+                change = stock.json()['c'] - stock.json()['pc']
+                current = stock.json()['c']
+                percent = (change / current) * 100
+                if change > 0:
+                    change = '+' + str(round(change, 2))
+                else:
+                    change = round(change, 2)
+                if change > 0:
+                    percent = '+' + str(round(percent, 2))
+                else:
+                    percent = round(percent, 2)
                 return render_template('details.html', date=datetime.datetime.now().strftime("%a %b %d %H:%M:%S PDT %Y"), name=profile.json()['name'],
                                        ticker=profile.json()['ticker'], current=round(current ,2),
                                        change=change, percent=percent)
